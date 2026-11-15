@@ -201,18 +201,30 @@ class Utils {
     } else if (path.startsWith(Constants.PREFIX_GAME)) {
       Get.toNamed('/apk/${path.replaceFirst(Constants.PREFIX_GAME, '')}');
     } else if (path.startsWith(Constants.PREFIX_TOPIC)) {
-      String tag = path
-          .replaceFirst(Constants.PREFIX_TOPIC, '')
-          .replaceFirst(RegExp('\\?type=[A-Za-z0-9]+'), '');
-      try {
-        tag = Uri.encodeComponent(tag);
-      } catch (e) {
-        debugPrint(e.toString());
+      String tag = path.replaceFirst(Constants.PREFIX_TOPIC, '');
+      final int queryIndex = tag.indexOf('?');
+      final String query = queryIndex >= 0 ? tag.substring(queryIndex + 1) : '';
+      if (queryIndex >= 0) {
+        tag = tag.substring(0, queryIndex);
       }
-      if (path.contains('type=8')) {
+      // 酷安 HTML 里的标签链接是 percent-encoded 的，先还原成真实标签。
+      // 否则 type=8 的酷图标签会把编码后的字符串当成 tag 传给接口，
+      // 表现为标题乱码、内容为空。
+      try {
+        tag = Uri.decodeComponent(tag);
+      } catch (e) {
+        debugPrint('topic: failed to decode tag: $tag');
+      }
+      bool isCoolPic = false;
+      try {
+        isCoolPic = Uri.splitQueryString(query)['type'] == '8';
+      } catch (e) {
+        debugPrint('topic: failed to parse query: $query');
+      }
+      if (isCoolPic) {
         Get.toNamed('/coolpic', parameters: {'title': tag});
       } else {
-        Get.toNamed('/t/$tag');
+        Get.toNamed('/t/${Uri.encodeComponent(tag)}');
       }
     } else if (path.startsWith(Constants.PREFIX_PRODUCT)) {
       Get.toNamed(
