@@ -15,9 +15,10 @@ RzdPai/c001apk                (Kotlin 重写，本项目代码主线)
         ▼
 WangMCweijia/c001apk ──fork──> IapHubery/c001apk (本仓库)
 ```
-上游 Kotlin 主线：WangMCweijia/c001apk
-上游 : RzdPai/c001apk
-上游 Flutter 重写（已归档）：bggRGjQaUbCoE/c001apk-flutter
+- 上游 Kotlin 主线：WangMCweijia/c001apk
+- 上游 : RzdPai/c001apk
+- 上游 Flutter 重写（已归档）：bggRGjQaUbCoE/c001apk-flutter
+
 如上游更新，本项目会视情况进行同步（rebase/merge）。所有上游版权与许可声明均完整保留在 LICENSE.md。
 
 ## Getting Started
